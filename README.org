@@ -1,6 +1,7 @@
 * bonjourmadame.el
 
 Display or browse the image from bonjourmadame.fr
+
 Updated every day at 10AM (on CEST timezone)
 
 ** Install
