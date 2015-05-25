@@ -1,6 +1,6 @@
 ;;; bonjourmadame.el --- Say "Hello ma'am!"
 
-;; Time-stamp: <2015-05-25 18:43:32>
+;; Time-stamp: <2015-05-25 18:47:47>
 ;; Copyright (C) 2015 Pierre Lecocq
 ;; Version: 0.1
 
@@ -21,6 +21,11 @@
 
 ;; Display or browse the image from bonjourmadame.fr
 ;; Updated every day at 10AM (on CEST timezone)
+;;
+;; Keys:
+;;
+;; - h: hide the buffer (switch to the previous one)
+;; - q: quit (kill the buffer)
 
 ;;;; Changelog:
 
