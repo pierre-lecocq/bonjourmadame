@@ -1,6 +1,6 @@
 ;;; bonjourmadame.el --- Say "Hello ma'am!"
 
-;; Time-stamp: <2015-05-25 15:07:58>
+;; Time-stamp: <2015-05-25 15:55:10>
 ;; Copyright (C) 2015 Pierre Lecocq
 ;; Version: 0.1
 
@@ -86,7 +86,8 @@
     (switch-to-buffer bonjourmadame-buffer-name)
     (erase-buffer)
     (insert-image image)
-    (insert (format "\n\nDate: %s" bonjourmadame--date))))
+    (insert (format "\n\nDate: %s" bonjourmadame--date))
+    (read-only-mode)))
 
 ;;;###autoload
 (defun bonjourmadame-browse-to-image ()
