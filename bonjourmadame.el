@@ -1,6 +1,6 @@
 ;;; bonjourmadame.el --- Say "Hello ma'am!"
 
-;; Time-stamp: <2015-05-25 16:30:57>
+;; Time-stamp: <2015-05-25 18:43:32>
 ;; Copyright (C) 2015 Pierre Lecocq
 ;; Version: 0.1
 
@@ -28,16 +28,16 @@
 
 ;;; Code:
 
-(defvar bonjourmadame-cache-dir "~/.bonjourmadame"
+(defvar bonjourmadame--cache-dir "~/.bonjourmadame"
   "The images cache directory.")
 
-(defvar bonjourmadame-buffer-name "*Bonjour Madame*"
+(defvar bonjourmadame--buffer-name "*Bonjour Madame*"
   "The buffer name used to display the image.")
 
-(defvar bonjourmadame-url "http://bonjourmadame.fr"
+(defvar bonjourmadame--base-url "http://bonjourmadame.fr"
   "The base URL of bonjourmadame.fr.")
 
-(defvar bonjourmadame-refresh-hour 10
+(defvar bonjourmadame--refresh-hour 10
   "The hour bonjourmadame.fr is updated.")
 
 (defvar bonjourmadame-regexp "<img\\(.\\)+src=\"\\(http://\\(.\\)+tumblr.com\\(.\\)+.png\\)+\"[^>]+>"
@@ -57,12 +57,13 @@
   "Say Hello ma'am!"
   :group 'bonjourmadame)
 
+(define-key bonjourmadame-mode-map (kbd "h") 'bonjourmadame--hide)
 (define-key bonjourmadame-mode-map (kbd "q") 'bonjourmadame--quit)
 
 (defun bonjourmadame--get-image-url ()
   "Get the image URL."
   (when (string= "" bonjourmadame--image-url)
-    (with-current-buffer (url-retrieve-synchronously bonjourmadame-url)
+    (with-current-buffer (url-retrieve-synchronously bonjourmadame--base-url)
       (goto-char (point-min))
       (re-search-forward bonjourmadame-regexp nil t)
       (setq bonjourmadame--image-url (match-string 2))
@@ -73,17 +74,17 @@
   "Get the local image path."
   (set-time-zone-rule "CEST")
   (setq reftime (float-time))
-  (when (< (string-to-number (format-time-string "%H")) bonjourmadame-refresh-hour)
-    (setq reftime (- reftime (* bonjourmadame-refresh-hour 60 60))))
+  (when (< (string-to-number (format-time-string "%H")) bonjourmadame--refresh-hour)
+    (setq reftime (- reftime (* bonjourmadame--refresh-hour 60 60))))
   (setq bonjourmadame--date (format-time-string "%Y-%m-%d" reftime))
   (concat
-   (file-name-as-directory bonjourmadame-cache-dir)
+   (file-name-as-directory bonjourmadame--cache-dir)
    (format "%s.png" bonjourmadame--date)))
 
 (defun bonjourmadame--download-image ()
   "Download and store the image."
-  (unless (file-accessible-directory-p bonjourmadame-cache-dir)
-    (make-directory bonjourmadame-cache-dir t))
+  (unless (file-accessible-directory-p bonjourmadame--cache-dir)
+    (make-directory bonjourmadame--cache-dir t))
   (let ((path (bonjourmadame--get-image-path))
         (url (bonjourmadame--get-image-url)))
     (unless (file-exists-p path)
@@ -94,16 +95,22 @@
   (bonjourmadame--download-image)
   (let ((image (create-image (bonjourmadame--get-image-path))))
     (setq bonjourmadame--previous-buffer (current-buffer))
-    (switch-to-buffer bonjourmadame-buffer-name)
+    (switch-to-buffer bonjourmadame--buffer-name)
     (erase-buffer)
     (insert-image image)
     (insert (format "\n\nDate: %s" bonjourmadame--date))
     (bonjourmadame-mode)
     (read-only-mode)))
 
-(defun bonjourmadame--quit ()
+(defun bonjourmadame--hide ()
+  "Hide the buffer."
   (interactive)
-  (kill-buffer (get-buffer bonjourmadame-buffer-name))
+  (switch-to-buffer bonjourmadame--previous-buffer))
+
+(defun bonjourmadame--quit ()
+  "Quit."
+  (interactive)
+  (kill-buffer (get-buffer bonjourmadame--buffer-name))
   (switch-to-buffer bonjourmadame--previous-buffer)
   (message "Au revoir madame"))
 
@@ -117,7 +124,7 @@
 (defun bonjourmadame-browse-to-site ()
   "Browse to the site."
   (interactive)
-  (browse-url bonjourmadame-url))
+  (browse-url bonjourmadame--base-url))
 
 ;;;###autoload
 (defun bonjourmadame ()

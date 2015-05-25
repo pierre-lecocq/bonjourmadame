@@ -24,6 +24,13 @@ Images are stored locally in the =~/.bonjourmadame/= directory. You might want t
 
 As images are updated at 10AM CEST, it looks at the current time. Therefore, if you launch the command before 10AM, you will have the image of yesterday. Be patient and wait 10AM to get the new one.
 
+** Keys
+
+Once in the =*Bonjour Madame*= buffer, you can hit:
+
+- =h= to hide the buffer (switch to the previous one)
+- =q= to quit (kill the buffer)
+
 ** Changelog
 
 - v0.1: first release
