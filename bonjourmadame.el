@@ -1,6 +1,6 @@
 ;;; bonjourmadame.el --- Say "Hello ma'am!"
 
-;; Time-stamp: <2015-05-25 13:57:30>
+;; Time-stamp: <2015-05-25 15:07:58>
 ;; Copyright (C) 2015 Pierre Lecocq
 ;; Version: 0.1
 
@@ -43,6 +43,9 @@
 (defvar bonjourmadame-regexp "<img\\(.\\)+src=\"\\(http://\\(.\\)+tumblr.com\\(.\\)+.png\\)+\"[^>]+>"
   "The regexp to match the wanted image URL.")
 
+(defvar bonjourmadame--date ""
+  "The date of the image.")
+
 (defvar bonjourmadame--image-url ""
   "The internal image URL.")
 
@@ -62,9 +65,10 @@
   (setq reftime (float-time))
   (when (< (string-to-number (format-time-string "%H")) bonjourmadame-refresh-hour)
     (setq reftime (- reftime (* bonjourmadame-refresh-hour 60 60))))
+  (setq bonjourmadame--date (format-time-string "%Y-%m-%d" reftime))
   (concat
    (file-name-as-directory bonjourmadame-cache-dir)
-   (format "%s.png" (format-time-string "%Y-%m-%d" reftime))))
+   (format "%s.png" bonjourmadame--date)))
 
 (defun bonjourmadame--download-image ()
   "Download and store the image."
@@ -81,7 +85,8 @@
   (let ((image (create-image (bonjourmadame--get-image-path))))
     (switch-to-buffer bonjourmadame-buffer-name)
     (erase-buffer)
-    (insert-image image)))
+    (insert-image image)
+    (insert (format "\n\nDate: %s" bonjourmadame--date))))
 
 ;;;###autoload
 (defun bonjourmadame-browse-to-image ()
