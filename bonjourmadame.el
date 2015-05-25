@@ -1,6 +1,6 @@
 ;;; bonjourmadame.el --- Say "Hello ma'am!"
 
-;; Time-stamp: <2015-05-25 19:04:06>
+;; Time-stamp: <2015-05-25 19:08:01>
 ;; Copyright (C) 2015 Pierre Lecocq
 ;; Version: 0.1
 
@@ -33,31 +33,15 @@
 
 ;;; Code:
 
-(defvar bonjourmadame--cache-dir "~/.bonjourmadame"
-  "The images cache directory.")
+(defvar bonjourmadame--cache-dir "~/.bonjourmadame")
+(defvar bonjourmadame--buffer-name "*Bonjour Madame*")
+(defvar bonjourmadame--base-url "http://bonjourmadame.fr")
+(defvar bonjourmadame--refresh-hour 10)
+(defvar bonjourmadame--regexp "<img\\(.\\)+src=\"\\(http://\\(.\\)+tumblr.com\\(.\\)+.png\\)+\"[^>]+>")
+(defvar bonjourmadame--image-time nil)
+(defvar bonjourmadame--image-url "")
+(defvar bonjourmadame--previous-buffer nil)
 
-(defvar bonjourmadame--buffer-name "*Bonjour Madame*"
-  "The buffer name used to display the image.")
-
-(defvar bonjourmadame--base-url "http://bonjourmadame.fr"
-  "The base URL of bonjourmadame.fr.")
-
-(defvar bonjourmadame--refresh-hour 10
-  "The hour bonjourmadame.fr is updated.")
-
-(defvar bonjourmadame-regexp "<img\\(.\\)+src=\"\\(http://\\(.\\)+tumblr.com\\(.\\)+.png\\)+\"[^>]+>"
-  "The regexp to match the wanted image URL.")
-
-(defvar bonjourmadame--image-time ""
-  "The time of the image.")
-
-(defvar bonjourmadame--image-url ""
-  "The internal image URL.")
-
-(defvar bonjourmadame--previous-buffer nil
-  "The previous buffer.")
-
-;;;###autoload
 (define-derived-mode bonjourmadame-mode special-mode "bonjourmadame"
   "Say Hello ma'am!"
   :group 'bonjourmadame)
@@ -70,7 +54,7 @@
   (when (string= "" bonjourmadame--image-url)
     (with-current-buffer (url-retrieve-synchronously bonjourmadame--base-url)
       (goto-char (point-min))
-      (re-search-forward bonjourmadame-regexp nil t)
+      (re-search-forward bonjourmadame--regexp nil t)
       (setq bonjourmadame--image-url (match-string 2))
       (kill-buffer)))
   bonjourmadame--image-url)
