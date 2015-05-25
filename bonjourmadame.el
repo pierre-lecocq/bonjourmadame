@@ -1,8 +1,8 @@
 ;;; bonjourmadame.el --- Say "Hello ma'am!"
 
-;; Time-stamp: <2015-05-25 19:08:01>
+;; Time-stamp: <2015-05-25 23:45:00>
 ;; Copyright (C) 2015 Pierre Lecocq
-;; Version: 0.1
+;; Version: 0.2
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@
 
 ;;;; Changelog:
 
+;; v0.2: make it a major mode
 ;; v0.1: first release
 
 ;;; Code:
