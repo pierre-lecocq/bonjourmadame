@@ -1,6 +1,6 @@
 ;;; bonjourmadame.el --- Say "Hello ma'am!"
 
-;; Time-stamp: <2015-05-25 15:55:10>
+;; Time-stamp: <2015-05-25 16:30:57>
 ;; Copyright (C) 2015 Pierre Lecocq
 ;; Version: 0.1
 
@@ -49,6 +49,16 @@
 (defvar bonjourmadame--image-url ""
   "The internal image URL.")
 
+(defvar bonjourmadame--previous-buffer nil
+  "The previous buffer.")
+
+;;;###autoload
+(define-derived-mode bonjourmadame-mode special-mode "bonjourmadame"
+  "Say Hello ma'am!"
+  :group 'bonjourmadame)
+
+(define-key bonjourmadame-mode-map (kbd "q") 'bonjourmadame--quit)
+
 (defun bonjourmadame--get-image-url ()
   "Get the image URL."
   (when (string= "" bonjourmadame--image-url)
@@ -83,11 +93,19 @@
   "Display the image."
   (bonjourmadame--download-image)
   (let ((image (create-image (bonjourmadame--get-image-path))))
+    (setq bonjourmadame--previous-buffer (current-buffer))
     (switch-to-buffer bonjourmadame-buffer-name)
     (erase-buffer)
     (insert-image image)
     (insert (format "\n\nDate: %s" bonjourmadame--date))
+    (bonjourmadame-mode)
     (read-only-mode)))
+
+(defun bonjourmadame--quit ()
+  (interactive)
+  (kill-buffer (get-buffer bonjourmadame-buffer-name))
+  (switch-to-buffer bonjourmadame--previous-buffer)
+  (message "Au revoir madame"))
 
 ;;;###autoload
 (defun bonjourmadame-browse-to-image ()
