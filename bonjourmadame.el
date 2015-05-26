@@ -1,6 +1,6 @@
 ;;; bonjourmadame.el --- Say "Hello ma'am!"
 
-;; Time-stamp: <2015-05-26 12:18:11>
+;; Time-stamp: <2015-05-26 22:12:37>
 ;; Copyright (C) 2015 Pierre Lecocq
 ;; Version: 0.3
 
@@ -51,10 +51,10 @@
   "Say Hello ma'am!"
   :group 'bonjourmadame)
 
-(define-key bonjourmadame-mode-map (kbd "n") 'bonjourmadame--next)
-(define-key bonjourmadame-mode-map (kbd "p") 'bonjourmadame--prev)
-(define-key bonjourmadame-mode-map (kbd "h") 'bonjourmadame--hide)
-(define-key bonjourmadame-mode-map (kbd "q") 'bonjourmadame--quit)
+(define-key bonjourmadame-mode-map (kbd "n") 'bonjourmadame-next)
+(define-key bonjourmadame-mode-map (kbd "p") 'bonjourmadame-prev)
+(define-key bonjourmadame-mode-map (kbd "h") 'bonjourmadame-hide)
+(define-key bonjourmadame-mode-map (kbd "q") 'bonjourmadame-quit)
 
 (defun bonjourmadame--get-image-url ()
   "Get the image URL."
@@ -104,25 +104,25 @@
     (bonjourmadame-mode)
     (read-only-mode)))
 
-(defun bonjourmadame--next ()
+(defun bonjourmadame-next ()
   "Display the next image."
   (interactive)
   (setq bonjourmadame--page (+ bonjourmadame--page 1))
   (bonjourmadame--display-image))
 
-(defun bonjourmadame--prev ()
+(defun bonjourmadame-prev ()
   "Display the previous image."
   (interactive)
   (when (> bonjourmadame--page 1)
     (setq bonjourmadame--page (- bonjourmadame--page 1))
     (bonjourmadame--display-image)))
 
-(defun bonjourmadame--hide ()
+(defun bonjourmadame-hide ()
   "Hide the buffer."
   (interactive)
   (switch-to-buffer bonjourmadame--previous-buffer))
 
-(defun bonjourmadame--quit ()
+(defun bonjourmadame-quit ()
   "Quit."
   (interactive)
   (setq bonjourmadame--page 1)
