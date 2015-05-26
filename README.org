@@ -1,6 +1,6 @@
 * bonjourmadame.el
 
-Display or browse the image from bonjourmadame.fr within GNU/Emacs.
+Display the image from bonjourmadame.fr within GNU/Emacs.
 
 ** Disclamer
 
@@ -13,8 +13,7 @@ For certain person, the image displayed might be NSFW.
 ** Usage
 
 - =M-x bonjourmadame=
-- =M-x bonjourmadame-browse-to-image=
-- =M-x bonjourmadame-browse-to-website=
+- =M-x bonjourmadame-browse=
 
 ** How it works
 
@@ -22,7 +21,7 @@ After launching the command =M-x bonjourmadame= it opens a new buffer and insert
 
 Images are stored locally in the =~/.bonjourmadame/= directory. You might want to remove or empty it regularly in order not to get caught or to save space.
 
-As images are updated at 10AM CEST, it looks at the current time. Therefore, if you launch the command before 10AM, you will have the image of yesterday. Be patient and wait 10AM to get the new one.
+As images are updated at 10AM (Europe/Paris timezone), it looks at the current time. Therefore, if you launch the command before 10AM, you will have the image of yesterday. Be patient and wait 10AM to get the new one.
 
 ** Keys
 
@@ -33,9 +32,6 @@ Once in the =*Bonjour Madame*= buffer, you can hit:
 
 ** Changelog
 
+- v0.3: add page navigation
 - v0.2: make it a major mode
 - v0.1: first release
-
-** Todo
-
-- provide navigation to get older images
