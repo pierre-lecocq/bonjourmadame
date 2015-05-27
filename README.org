@@ -2,7 +2,7 @@
 
 Display the image from bonjourmadame.fr within GNU/Emacs.
 
-** Disclamer
+** Disclaimer
 
 For certain person, the image displayed might be NSFW.
 
