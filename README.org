@@ -8,7 +8,9 @@ For certain person, the image displayed might be NSFW.
 
 ** Install
 
-/Soon available on Melpa/
+A package is available on MELPA. To install it, simply type =M-x package-install= RET =bonjourmadame=
+
+Or, if you want to install it from the source repository, just clone the =bonjourmadame.el= file in your emacs load-path.
 
 ** Usage
 
