@@ -1,5 +1,7 @@
 * bonjourmadame.el
 
+[[http://melpa.org/#/bonjourmadame][file:http://melpa.org/packages/bonjourmadame-badge.svg]]
+
 Display the image from bonjourmadame.fr within GNU/Emacs.
 
 ** Disclaimer
