@@ -90,6 +90,8 @@
 
 (defun bonjourmadame--display-image ()
   "Display the image."
+  (unless (display-graphic-p)
+    (error "bonjourmadame is only available in graphical mode. You might want to execute `bonjourmadame-browse' instead."))
   (bonjourmadame--download-image)
   (let ((image (create-image (bonjourmadame--get-image-path)))
         (buf (current-buffer)))
