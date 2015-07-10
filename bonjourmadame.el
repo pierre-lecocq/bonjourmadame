@@ -1,8 +1,8 @@
 ;;; bonjourmadame.el --- Say "Hello ma'am!"
 
-;; Time-stamp: <2015-05-26 22:12:37>
+;; Time-stamp: <2015-07-10 08:31:39>
 ;; Copyright (C) 2015 Pierre Lecocq
-;; Version: 0.3
+;; Version: 0.4
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@
 
 ;;;; Changelog:
 
+;; v0.4: display and time bug fixes
 ;; v0.3: add page navigation
 ;; v0.2: make it a major mode
 ;; v0.1: first release
@@ -69,13 +70,13 @@
 (defun bonjourmadame--get-image-path ()
   "Get the local image path."
   (set-time-zone-rule "Europe/Paris")
-  (setq bonjourmadame--image-time (float-time))
+  (setq bonjourmadame--image-time (current-time))
   (when (> bonjourmadame--page 1)
-    (setq bonjourmadame--image-time (- bonjourmadame--image-time (* (- bonjourmadame--page 1) 60 60 24))))
+    (setq bonjourmadame--image-time (time-subtract bonjourmadame--image-time (seconds-to-time (* (- bonjourmadame--page 1) 60 60 24)))))
   (let ((current-hour (string-to-number (format-time-string "%H"))))
     (when (< current-hour bonjourmadame--refresh-hour)
       (message "Wait at most %dh to get a newer image!" (- bonjourmadame--refresh-hour current-hour))
-      (setq bonjourmadame--image-time (- bonjourmadame--image-time (* bonjourmadame--refresh-hour 60 60)))))
+      (setq bonjourmadame--image-time (time-subtract bonjourmadame--image-time (seconds-to-time (* bonjourmadame--refresh-hour 60 60))))))
   (concat
    (file-name-as-directory bonjourmadame--cache-dir)
    (format "%s.png" (format-time-string "%Y-%m-%d" bonjourmadame--image-time))))
@@ -104,7 +105,8 @@
     (insert-image image)
     (insert (format "\n\nDate: %s" (format-time-string "%Y-%m-%d" bonjourmadame--image-time)))
     (bonjourmadame-mode)
-    (read-only-mode)))
+    (read-only-mode)
+    (goto-char (point-min))))
 
 (defun bonjourmadame-next ()
   "Display the next image."
