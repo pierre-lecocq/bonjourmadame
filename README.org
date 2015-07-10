@@ -38,6 +38,7 @@ Once in the =*Bonjour Madame*= buffer, you can hit:
 
 ** Changelog
 
+- v0.4: display and time calculation bug fixes
 - v0.3: add page navigation
 - v0.2: make it a major mode
 - v0.1: first release
