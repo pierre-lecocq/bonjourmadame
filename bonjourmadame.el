@@ -89,13 +89,34 @@
     (unless (file-exists-p path)
       (url-copy-file (bonjourmadame--get-image-url) path))))
 
+(defun bonjourmadame--max-image-size (buf)
+  "Determine the max size to use to display the image.
+BUF must be the target buffer."
+  (let* ((window (get-buffer-window buf))
+         (frame (window-frame window)))
+    (cons (window-pixel-width window)
+          (- (window-pixel-height window) (* 3 (frame-char-height frame))))))
+(defcustom bonjourmadame-max-image-size-function 'bonjourmadame--max-image-size
+  "Function used to compute the max size for the image.
+The return value must be a (max-width . max-height) cons cell."
+  :type '(function))
+
 (defun bonjourmadame--display-image ()
   "Display the image."
   (unless (display-graphic-p)
     (error "bonjourmadame is only available in graphical mode. You might want to execute `bonjourmadame-browse' instead."))
   (bonjourmadame--download-image)
-  (let ((image (create-image (bonjourmadame--get-image-path)))
-        (buf (current-buffer)))
+  (let* ((image-path (bonjourmadame--get-image-path))
+         (buf (current-buffer))
+         (max-size (if bonjourmadame-max-image-size-function
+                       (apply bonjourmadame-max-image-size-function (list buf))
+                     nil))
+         (extra-params (when (and max-size
+                                  (image-type-available-p 'imagemagick))
+                         (list 'imagemagick nil
+                               :max-width (car max-size)
+                               :max-height (cdr max-size))))
+         (image (apply 'create-image (cons image-path extra-params))))
     (when (not (equal (buffer-name buf) bonjourmadame--buffer-name))
       (setq bonjourmadame--previous-buffer buf))
     (switch-to-buffer bonjourmadame--buffer-name)
@@ -106,7 +127,9 @@
     (insert (format "\n\nDate: %s" (format-time-string "%Y-%m-%d" bonjourmadame--image-time)))
     (bonjourmadame-mode)
     (read-only-mode)
-    (goto-char (point-min))))
+    (goto-char (point-min))
+    (when max-size
+      (add-hook 'window-configuration-change-hook 'bonjourmadame--display-image nil t))))
 
 (defun bonjourmadame-next ()
   "Display the next image."
