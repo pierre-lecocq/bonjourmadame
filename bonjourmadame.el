@@ -38,11 +38,17 @@
 
 ;;; Code:
 
+(require 'rx)
+
 (defvar bonjourmadame--cache-dir "~/.bonjourmadame")
 (defvar bonjourmadame--buffer-name "*Bonjour Madame*")
 (defvar bonjourmadame--base-url "http://bonjourmadame.fr")
 (defvar bonjourmadame--refresh-hour 10)
-(defvar bonjourmadame--regexp "<img\\(.\\)+src=\"\\(http://\\(.\\)+tumblr.com\\(.\\)+.\\(png\\|jpg\\|jpeg\\|gif\\)\\)+\"[^>]+>")
+(defvar bonjourmadame--regexp
+  (rx
+   "<img" (1+ space)
+   "src=\"" (group "http://" (1+ nonl) "tumblr.com" (1+ nonl) "." (or "png" "jpg" "jpeg" "gif")) "\""
+   (0+ (not (any ">"))) ">"))
 (defvar bonjourmadame--image-time nil)
 (defvar bonjourmadame--image-url "")
 (defvar bonjourmadame--previous-buffer nil)
@@ -63,7 +69,7 @@
     (with-current-buffer (url-retrieve-synchronously url)
       (goto-char (point-min))
       (re-search-forward bonjourmadame--regexp nil t)
-      (setq bonjourmadame--image-url (match-string 2))
+      (setq bonjourmadame--image-url (match-string 1))
       (kill-buffer)))
   bonjourmadame--image-url)
 
