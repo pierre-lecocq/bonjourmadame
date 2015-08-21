@@ -41,7 +41,7 @@
 (require 'rx)
 (require 'web-mode nil t)
 
-(defvar bonjourmadame--cache-dir "~/.bonjourmadame")
+(defvar bonjourmadame--cache-dir (concat (or (getenv "XDG_CACHE_HOME") "~/.cache") "/bonjourmadame"))
 (defvar bonjourmadame--buffer-name "*Bonjour Madame*")
 (defvar bonjourmadame--base-url "http://bonjourmadame.fr")
 (defvar bonjourmadame--refresh-hour 10)
