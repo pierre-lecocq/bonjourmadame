@@ -38,13 +38,23 @@
 
 ;;; Code:
 
-(defvar bonjourmadame--cache-dir "~/.bonjourmadame")
+(require 'rx)
+(require 'web-mode nil t)
+
+(defvar bonjourmadame--cache-dir (concat (or (getenv "XDG_CACHE_HOME") "~/.cache") "/bonjourmadame"))
 (defvar bonjourmadame--buffer-name "*Bonjour Madame*")
 (defvar bonjourmadame--base-url "http://bonjourmadame.fr")
 (defvar bonjourmadame--refresh-hour 10)
-(defvar bonjourmadame--regexp "<img\\(.\\)+src=\"\\(http://\\(.\\)+tumblr.com\\(.\\)+.\\(png\\|jpg\\|jpeg\\|gif\\)\\)+\"[^>]+>")
+(defvar bonjourmadame--regexp
+  (rx
+   "<img" (1+ space)
+   "src=\"" (group "http://" (1+ nonl) "tumblr.com" (1+ nonl) "." (or "png" "jpg" "jpeg" "gif")) "\""
+   (1+ space)
+   "alt=\"" (group (0+ (not (any "\"")))) "\""
+   (0+ (not (any ">"))) ">"))
 (defvar bonjourmadame--image-time nil)
 (defvar bonjourmadame--image-url "")
+(defvar bonjourmadame--image-title "")
 (defvar bonjourmadame--previous-buffer nil)
 (defvar bonjourmadame--page 1)
 
@@ -63,7 +73,8 @@
     (with-current-buffer (url-retrieve-synchronously url)
       (goto-char (point-min))
       (re-search-forward bonjourmadame--regexp nil t)
-      (setq bonjourmadame--image-url (match-string 2))
+      (setq bonjourmadame--image-url (match-string 1)
+            bonjourmadame--image-title (match-string 2))
       (kill-buffer)))
   bonjourmadame--image-url)
 
@@ -81,13 +92,32 @@
    (file-name-as-directory bonjourmadame--cache-dir)
    (format "%s.png" (format-time-string "%Y-%m-%d" bonjourmadame--image-time))))
 
+(defun bonjourmadame--get-title ()
+  "Get the image title."
+  (let* ((title-path (concat (bonjourmadame--get-image-path) ".txt"))
+         (title (if (file-exists-p title-path)
+                    (with-temp-buffer
+                      (save-excursion (insert-file-contents-literally title-path))
+                      ;; Escaping HTML entities is hard!
+                      (iso-sgml2iso (point-min) (point-max))
+                      (html2text)
+                      (when (featurep 'web-mode)
+                        (web-mode-dom-entities-replace))
+                      (buffer-substring-no-properties (point-min) (point-max)))
+                  "")))
+    (string-trim (replace-regexp-in-string (rx (1+ (any blank " "))) " " title))))
+
 (defun bonjourmadame--download-image ()
   "Download and store the image."
   (unless (file-accessible-directory-p bonjourmadame--cache-dir)
     (make-directory bonjourmadame--cache-dir t))
-  (let ((path (bonjourmadame--get-image-path)))
-    (unless (file-exists-p path)
-      (url-copy-file (bonjourmadame--get-image-url) path))))
+  (let* ((image-path (bonjourmadame--get-image-path))
+         (title-path (concat image-path ".txt")))
+    (unless (file-exists-p image-path)
+      (url-copy-file (bonjourmadame--get-image-url) image-path))
+    (unless (file-exists-p title-path)
+      (with-temp-file title-path
+        (insert bonjourmadame--image-title)))))
 
 (defun bonjourmadame--max-image-size (buf)
   "Determine the max size to use to display the image.
@@ -107,6 +137,7 @@ The return value must be a (max-width . max-height) cons cell."
     (error "bonjourmadame is only available in graphical mode. You might want to execute `bonjourmadame-browse' instead."))
   (bonjourmadame--download-image)
   (let* ((image-path (bonjourmadame--get-image-path))
+         (title (bonjourmadame--get-title))
          (buf (current-buffer))
          (max-size (if bonjourmadame-max-image-size-function
                        (apply bonjourmadame-max-image-size-function (list buf))
@@ -124,7 +155,7 @@ The return value must be a (max-width . max-height) cons cell."
       (setq inhibit-read-only t))
     (erase-buffer)
     (insert-image image)
-    (insert (format "\n\nDate: %s" (format-time-string "%Y-%m-%d" bonjourmadame--image-time)))
+    (insert (format "\n\n%s: %s" (format-time-string "%Y-%m-%d" bonjourmadame--image-time) title))
     (bonjourmadame-mode)
     (read-only-mode)
     (goto-char (point-min))
