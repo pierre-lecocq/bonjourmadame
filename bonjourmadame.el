@@ -1,8 +1,8 @@
 ;;; bonjourmadame.el --- Say "Hello ma'am!"
 
-;; Time-stamp: <2015-07-10 08:31:39>
+;; Time-stamp: <2015-09-13 23:30:23>
 ;; Copyright (C) 2015 Pierre Lecocq
-;; Version: 0.4
+;; Version: 0.5
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -31,10 +31,15 @@
 
 ;;;; Changelog:
 
+;; v0.5: display title, use rx and stick to XDG_CACHE_HOME standard - by Schnouki (Thomas Jost)
 ;; v0.4: display and time bug fixes
 ;; v0.3: add page navigation
 ;; v0.2: make it a major mode
 ;; v0.1: first release
+
+;;;; Contributors:
+
+;; - Schnouki (Thomas Jost)
 
 ;;; Code:
 

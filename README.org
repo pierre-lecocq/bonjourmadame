@@ -38,7 +38,12 @@ Once in the =*Bonjour Madame*= buffer, you can hit:
 
 ** Changelog
 
+- v0.5: display title, use rx and stick to XDG_CACHE_HOME standard - by [[https://github.com/Schnouki][Schnouki]] (Thomas Jost)
 - v0.4: display and time calculation bug fixes
 - v0.3: add page navigation
 - v0.2: make it a major mode
 - v0.1: first release
+
+** Contributors
+
+- [[https://github.com/Schnouki][Schnouki]] (Thomas Jost)
