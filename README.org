@@ -23,7 +23,7 @@ Or, if you want to install it from the source repository, just clone the =bonjou
 
 After launching the command =M-x bonjourmadame= it opens a new buffer and insert the image.
 
-Images are stored locally in the =~/.bonjourmadame/= directory. You might want to remove or empty it regularly in order not to get caught or to save space.
+Images are stored locally in the =~/.cache/bonjourmadame/= directory. You might want to remove or empty it regularly in order not to get caught or to save space.
 
 As images are updated at 10AM (Europe/Paris timezone), it looks at the current time. Therefore, if you launch the command before 10AM, you will have the image of yesterday. Be patient and wait 10AM to get the new one.
 
