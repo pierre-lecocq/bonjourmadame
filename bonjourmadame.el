@@ -1,6 +1,6 @@
 ;;; bonjourmadame.el --- Say "Hello ma'am!"
 
-;; Time-stamp: <2015-09-13 23:30:23>
+;; Time-stamp: <2015-09-14 12:06:14>
 ;; Copyright (C) 2015 Pierre Lecocq
 ;; Version: 0.5
 
@@ -110,7 +110,7 @@
                         (web-mode-dom-entities-replace))
                       (buffer-substring-no-properties (point-min) (point-max)))
                   "")))
-    (string-trim (replace-regexp-in-string (rx (1+ (any blank " "))) " " title))))
+    (replace-regexp-in-string "^\s+" "" (replace-regexp-in-string "\s+\\'" "" (replace-regexp-in-string (rx (1+ (any blank " "))) " " title)))))
 
 (defun bonjourmadame--download-image ()
   "Download and store the image."
