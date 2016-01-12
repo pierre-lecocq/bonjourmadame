@@ -4,11 +4,9 @@
 
 Display the image from bonjourmadame.fr within GNU/Emacs.
 
-[[./bonjourmadame.png][file:./bonjourmadame.png]]
-
 ** Disclaimer
 
-For certain person, the image displayed might be NSFW.
+For some people, images displayed might be NSFW.
 
 ** Install
 
@@ -37,6 +35,10 @@ Once in the =*Bonjour Madame*= buffer, you can hit:
 - =p= to get the previous image
 - =h= to hide the buffer (switch to the previous one)
 - =q= to quit (kill the buffer)
+
+** Example
+
+[[./bonjourmadame.png][file:./bonjourmadame.png]]
 
 ** Changelog
 
