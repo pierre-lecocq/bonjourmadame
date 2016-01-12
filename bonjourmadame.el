@@ -47,6 +47,12 @@
 (require 'rx)
 (require 'web-mode nil t)
 
+(declare-function web-mode-dom-entities-replace "web-mode")
+
+(defgroup bonjourmadame nil
+  "Say \"Hello ma'am!\""
+  :group 'image)
+
 (defvar bonjourmadame--cache-dir (concat (or (getenv "XDG_CACHE_HOME") "~/.cache") "/bonjourmadame"))
 (defvar bonjourmadame--buffer-name "*Bonjour Madame*")
 (defvar bonjourmadame--base-url "http://ditesbonjouralamadame.tumblr.com")
