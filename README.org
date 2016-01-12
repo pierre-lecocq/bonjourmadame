@@ -4,6 +4,8 @@
 
 Display the image from bonjourmadame.fr within GNU/Emacs.
 
+[[./bonjourmadame.png][file:./bonjourmadame.png]]
+
 ** Disclaimer
 
 For certain person, the image displayed might be NSFW.
@@ -38,6 +40,7 @@ Once in the =*Bonjour Madame*= buffer, you can hit:
 
 ** Changelog
 
+- v0.6: change base URL after the main domain outage - by [[https://github.com/ShadowMitia][ShadowMitia]] (Dimitri Belopopsky)
 - v0.5: display title, use rx and stick to XDG_CACHE_HOME standard - by [[https://github.com/Schnouki][Schnouki]] (Thomas Jost)
 - v0.4: display and time calculation bug fixes
 - v0.3: add page navigation
@@ -47,3 +50,4 @@ Once in the =*Bonjour Madame*= buffer, you can hit:
 ** Contributors
 
 - [[https://github.com/Schnouki][Schnouki]] (Thomas Jost)
+- [[https://github.com/ShadowMitia][ShadowMitia]] (Dimitri Belopopsky)

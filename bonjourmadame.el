@@ -2,7 +2,7 @@
 
 ;; Time-stamp: <2015-09-14 12:06:14>
 ;; Copyright (C) 2015 Pierre Lecocq
-;; Version: 0.5
+;; Version: 0.6
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@
 
 ;;;; Changelog:
 
+;; v0.6: change base URL after the main domain outage - by ShadowMitia (Dimitri Belopopsky)
 ;; v0.5: display title, use rx and stick to XDG_CACHE_HOME standard - by Schnouki (Thomas Jost)
 ;; v0.4: display and time bug fixes
 ;; v0.3: add page navigation
