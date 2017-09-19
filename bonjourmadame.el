@@ -1,6 +1,6 @@
 ;;; bonjourmadame.el --- Say "Hello ma'am!"
 
-;; Time-stamp: <2015-09-14 12:06:14>
+;; Time-stamp: <2017-09-19 13:33:46>
 ;; Copyright (C) 2015 Pierre Lecocq
 ;; Version: 0.6
 
@@ -55,7 +55,7 @@
 
 (defvar bonjourmadame--cache-dir (concat (or (getenv "XDG_CACHE_HOME") "~/.cache") "/bonjourmadame"))
 (defvar bonjourmadame--buffer-name "*Bonjour Madame*")
-(defvar bonjourmadame--base-url "http://ditesbonjouralamadame.tumblr.com")
+(defvar bonjourmadame--base-url "http://dites.bonjourmadame.fr")
 (defvar bonjourmadame--refresh-hour 10)
 (defvar bonjourmadame--regexp
   (rx
